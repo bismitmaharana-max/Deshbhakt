@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polar Bear Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #d4e5f0 0%, #a8c5d9 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .bear-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: -80px;
+            z-index: 10;
+        }
+
+        .bear {
+            position: relative;
+            width: 280px;
+            height: 320px;
+        }
+
+        .bear-body {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 180px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #e8e8e8 100%);
+            border-radius: 45% 45% 40% 40%;
+            z-index: 2;
+            box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.05),
+                        inset 10px 10px 20px rgba(255, 255, 255, 0.8);
+        }
+
+        .bear-head {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 200px;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 50%, #ebebeb 100%);
+            border-radius: 50% 50% 45% 45%;
+            z-index: 3;
+            box-shadow: inset -15px -15px 30px rgba(0, 0, 0, 0.08),
+                        inset 15px 15px 30px rgba(255, 255, 255, 0.9),
+                        0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .ear {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #e8e8e8 100%);
+            border-radius: 50%;
+            top: 30px;
+            box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.05),
+                        inset 5px 5px 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .ear::before {
+            content: '';
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #d87a92 0%, #c85a7c 50%, #b84a6c 100%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: inset -3px -3px 6px rgba(0, 0, 0, 0.15),
+                        inset 3px 3px 6px rgba(255, 255, 255, 0.3);
+        }
+
+        .ear-left {
+            left: 15px;
+        }
+
+        .ear-right {
+            right: 15px;
+        }
+
+        .face {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+        }
+
+        .eyebrow {
+            position: absolute;
+            width: 40px;
+            height: 12px;
+            background: linear-gradient(135deg, #5a5a6e 0%, #4a4a5e 100%);
+            border-radius: 50%;
+            top: 80px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .eyebrow-left {
+            left: 45px;
+            transform: rotate(-10deg);
+        }
+
+        .eyebrow-right {
+            right: 45px;
+            transform: rotate(10deg);
+        }
+
+        .eye {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 80%;
+            top: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: height 0.3s ease;
+        }
+
+        .eye.closed {
+            height: 3px;
+        }
+
+        .pupil {
+            width: 12px;
+            height: 12px;
+            background: #4a4a5e;
+            border-radius: 50%;
+            position: relative;
+            transition: transform 0.1s ease, opacity 0.3s ease;
+        }
+
+        .eye.closed .pupil {
+            opacity: 0;
+        }
+
+        .pupil::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 4px;
+        }
+
+        .eye-left {
+            left: 60px;
+        }
+
+        .eye-right {
+            right: 60px;
+        }
+
+        .nose {
+            position: absolute;
+            width: 18px;
+            height: 14px;
+            background: linear-gradient(135deg, #5a5a6e 0%, #4a4a5e 50%, #3a3a4e 100%);
+            border-radius: 50%;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.3),
+                        0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .mouth {
+            position: absolute;
+            width: 80px;
+            height: 20px;
+            top: 145px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .mouth::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid #4a4a5e;
+            border-top: none;
+            border-radius: 0 0 50% 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .scarf {
+            display: none;
+        }
+
+        .hand {
+            position: absolute;
+            width: 70px;
+            height: 90px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #e8e8e8 100%);
+            border-radius: 50%;
+            transition: all 0.4s ease;
+            z-index: 5;
+            box-shadow: inset -8px -8px 15px rgba(0, 0, 0, 0.06),
+                        inset 8px 8px 15px rgba(255, 255, 255, 0.8),
+                        0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hand-left {
+            top: 120px;
+            left: -100px;
+            transform: rotate(-15deg);
+        }
+
+        .hand-right {
+            top: 120px;
+            right: -100px;
+            transform: rotate(15deg);
+        }
+
+        .hand-left.active {
+            left: 35px;
+            top: 75px;
+        }
+
+        .hand-right.active {
+            right: 35px;
+            top: 75px;
+        }
+
+        .claw {
+            position: absolute;
+            width: 15px;
+            height: 8px;
+            background: linear-gradient(135deg, #5a5a6e 0%, #4a4a5e 50%, #3a3a4e 100%);
+            border-radius: 50%;
+            box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.3),
+                        inset 2px 2px 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .hand-left .claw:nth-child(1) { top: 5px; left: 10px; }
+        .hand-left .claw:nth-child(2) { top: 2px; left: 28px; }
+        .hand-left .claw:nth-child(3) { top: 5px; left: 46px; }
+
+        .hand-right .claw:nth-child(1) { top: 5px; right: 10px; }
+        .hand-right .claw:nth-child(2) { top: 2px; right: 28px; }
+        .hand-right .claw:nth-child(3) { top: 5px; right: 46px; }
+
+        .login-form {
+            background: white;
+            padding: 80px 40px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #d4b8c8;
+            border-radius: 10px;
+            font-size: 16px;
+            background: #ffffff;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #c85a7c;
+            background: #ffffff;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper label {
+            margin: 0;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #c85a7c 0%, #b4476a 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(200, 90, 124, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ===== CAT IMAGE ===== */
+        .cat{
+            position:absolute;
+            top:280px;
+            width:200px;
+            left: 115%;
+        }
+
+        .cat.left{ left:-340px; }
+        .cat.right{ right:-200px; }
+
+.cat img{
+  width:125%;
+  display:block;
+  mix-blend-mode: multiply;
+  background: transparent;
+}
+
+.eye{
+  position:absolute;
+  width:32px;
+  height:32px;
+  background:#fff;
+  border-radius:50%;
+  overflow:hidden;
+}
+ #login-button{
+            background-color: aqua;
+            height: 35px;
+            width: 100px;
+            font-size: 22px;
+            border-radius: 25px;
+            font-weight: bold;
+            border: none;
+            font-weight:bold;
+        }
+        #login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(200, 90, 124, 0.4);
+            background-color: rgba(200, 90, 124, 0.4);
+        }                 
+.pupil{
+  width:20px;
+  height:20px;
+  background:#000;
+  border-radius:50%;
+  position:absolute;
+  top:6px;
+  left:6px;
+}
+.left .eye.eye1{ top:110px; left:69px; }
+.left .eye.eye2{ top:106px; left:139px; }
+
+.right .eye.eye1{ top:109px; left:80px; }
+.right .eye.eye2{ top:109px; left:149px; }
+        
+.login-form {
+    background: white;
+    padding: 60px 40px 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #c85a7c;
+}
+
+.login-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #c85a7c, #b4476a);
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(200, 90, 124, 0.4);
+}
+
+        @media (max-width: 768px) {
+            .cat {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="bear-container">
+            <div class="bear">
+                <div class="bear-head">
+                    <div class="ear ear-left"></div>
+                    <div class="ear ear-right"></div>
+                    <div class="face">
+                        <div class="eyebrow eyebrow-left"></div>
+                        <div class="eyebrow eyebrow-right"></div>
+                        <div class="eye eye-left">
+                            <div class="pupil" id="pupilLeft"></div>
+                        </div>
+                        <div class="eye eye-right">
+                            <div class="pupil" id="pupilRight"></div>
+                        </div>
+                        <div class="nose"></div>
+                        <div class="mouth"></div>
+                    </div>
+                    <div class="hand hand-left" id="handLeft">
+                        <div class="claw"></div>
+                        <div class="claw"></div>
+                        <div class="claw"></div>
+                    </div>
+                    <div class="hand hand-right" id="handRight">
+                        <div class="claw"></div>
+                        <div class="claw"></div>
+                        <div class="claw"></div>
+                    </div>
+                </div>
+                <div class="bear-body"></div>
+                <div class="scarf"></div>
+                
+            </div>
+        </div>
+<!-- LEFT CAT -->
+  <div class="cat left">
+    <img src="Pictures\Cat_left.png">
+    <div class="eye eye1"><div class="pupil"></div></div>
+    <div class="eye eye2"><div class="pupil"></div></div>
+  </div>
+
+  <!-- RIGHT CAT -->
+  <div class="cat right">
+    <img src="Pictures\Cat_right.png">
+    <div class="eye eye1"><div class="pupil"></div></div>
+    <div class="eye eye2"><div class="pupil"></div></div>
+  </div>
+        <div class="login-form">
+            <div class="form-group">
+                <br>
+                <h2>Admin Login</h2>
+                <input type="email" id="email" placeholder="Email/Username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" placeholder="Password" required>
+                
+            </div>
+            <div class="remember-me">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                <button class="login-btn" onclick="login()">Login</button>
+            </div>
+            
+        </div>
+        
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+    const users = [
+        { userid: "admin", password: "admin@123" },
+        { userid: "Bismit", password: "Bismit@8226" },
+        { userid: "user1", password: "pass123" }
+    ];
+
+    function login() {
+        const username = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        const validUser = users.find(user =>
+            user.userid.toLowerCase() === username.toLowerCase() &&
+            user.password === password
+        );
+
+        if (validUser) {
+            localStorage.setItem("loggedInUser", validUser.userid);
+            window.location.href = "deshbhakt24-website.html#admin";
+        } else {
+            alert("Invalid username or password");
+        }
+    }
+
+    window.login = login;
+
+    // Auto redirect if already logged in
+    if (localStorage.getItem("loggedInUser")) {
+        window.location.href = "deshbhakt24-website.html#admin";
+    }
+});
+
+
+  const passwordInput = document.getElementById('password');
+  const handLeft = document.getElementById('handLeft');
+  const handRight = document.getElementById('handRight');
+  const bearEyes = document.querySelectorAll('.bear .eye');
+  const allEyes = document.querySelectorAll('.eye');
+
+  /* ========= EYE MOVEMENT ========= */
+  function moveEyes(event, maxMove = 6) {
+    allEyes.forEach(eye => {
+      const pupil = eye.querySelector('.pupil');
+      if (!pupil) return;
+
+      if (
+        eye.closest('.bear') &&
+        handLeft.classList.contains('active')
+      ) {
+        pupil.style.transform = 'translate(0,0)';
+        return;
+      }
+
+      const rect = eye.getBoundingClientRect();
+      const eyeX = rect.left + rect.width / 2;
+      const eyeY = rect.top + rect.height / 2;
+
+      const dx = event.clientX - eyeX;
+      const dy = event.clientY - eyeY;
+
+      const angle = Math.atan2(dy, dx);
+      const distance = Math.min(maxMove, Math.hypot(dx, dy) / 15);
+
+      const x = Math.cos(angle) * distance;
+      const y = Math.sin(angle) * distance;
+
+      pupil.style.transform = `translate(${x}px, ${y}px)`;
+    });
+  }
+
+  document.addEventListener('mousemove', moveEyes);
+
+  /* ========= PASSWORD INTERACTION ========= */
+  passwordInput.addEventListener('focus', () => {
+    handLeft.classList.add('active');
+    handRight.classList.add('active');
+    bearEyes.forEach(e => e.classList.add('closed'));
+  });
+
+  passwordInput.addEventListener('blur', () => {
+    handLeft.classList.remove('active');
+    handRight.classList.remove('active');
+    bearEyes.forEach(e => e.classList.remove('closed'));
+  });
+
+  passwordInput.addEventListener('input', () => {
+    if (passwordInput.value.length > 0) {
+      handLeft.classList.add('active');
+      handRight.classList.add('active');
+      bearEyes.forEach(e => e.classList.add('closed'));
+    }
+  });
+</script>
+</body>
+</html>
